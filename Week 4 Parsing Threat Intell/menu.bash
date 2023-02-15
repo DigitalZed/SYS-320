@@ -101,7 +101,7 @@ function secMenu {
 		[C]isco blocklist generator
 		[D]omain URL blocklist generator
 		[M]ac OSX blocklist generator
-		[W]indows blocklist generator
+		[F]irewall (Windows) blocklist generator
 		[I]Ptables blocklist generator
 		[E]xit
 		[B]ack to main menu"
