@@ -35,7 +35,7 @@ fi
 
 #windows firewall
 windows() {
-egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.0' badips.txt | tee badips.windowsform
+egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.0' badIPs.txt | tee badips.windowsform
 	for eachip in $(cat badips.windowsform)
 	do
 		echo 'netsh advfirewall firewall add rule name=\"BLOCK IP ADDRESS - ${eachip}\" dir=in action=block remoteip=${eachip}' | tee -a badips.netsh
@@ -47,7 +47,7 @@ egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.0' badips.txt | tee badips.windows
 
 #cisco
 cisco() {
-egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.0' badips.txt | tee badips.nocidr
+egrep -o '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.0' badIPs.txt | tee badips.nocidr
 for eachIP in $(cat badips.nocidr)
 do
 	echo "deny ip host ${eachIP} any" | tee -a badips.cisco 
