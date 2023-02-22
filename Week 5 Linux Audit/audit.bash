@@ -167,6 +167,7 @@ icmpRedir()
 		echo "ICMP redirects are compliant."
 	fi
 }
+icmpRedir
 #need to add ICMP redirects
 
 #ICMP redirects are not accepted - NOTES
