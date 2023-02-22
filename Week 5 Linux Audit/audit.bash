@@ -126,11 +126,10 @@ fi
 }
 uidCheck
 
-#the following function was written to ensure IP forwarding is disabled on kali Linux. The Ubuntu documentation states the command that should be used is "sysctl net.ipv4.ip forward however this command does not work on Kali and returns an error that there is no such file or directory. So this function instead checks the /etc/sysctl.conf file and looks for the flag in there
+#the following function was written to ensure IP forwarding is disabled on kali Linux. The Ubuntu documentation states the command that should be used is "sysctl net.ipv4.ip forward" however this command does not work on Kali and returns an error that there is no such file or directory. So this function instead checks the /etc/sysctl.conf file and looks for the flag in there
 ipForward()
 {
-forward=$(grep "net\.ipv4\.ip_forward" /etc/sysctl.conf  | awk -F. '{print $3}' | awk -F = '{print $2}'
-)
+forward=$(grep "net\.ipv4\.ip_forward" /etc/sysctl.conf  | awk -F. '{print $3}' | awk -F = '{print $2}')
 
 if [[ ${forward} != 0 ]]
 then
@@ -143,6 +142,31 @@ fi
 }
 ipForward
 
+
+icmpRedir()
+{
+	redir1=$(sysctl net.ipv4.conf.all.accept redirects | awk -F. '{print $3}')
+	redir2=$(sysctl net.ipv4.conf.default.accept_redirects | awk -F. '{print $3}')
+	redir3=$(grep "net\.ipv4\.conf\.all\.accept_redirects" /etc/sysctl.conf /ect/sysctl.d/* | awk -F. '{print $3}')
+	redir4=$(grep "net\.ipv4\.conf\.default\.accept_redirects" /etc/sysctl.conf /ect/sysctl.d/* | awk -F. '{print $3}')
+	
+	if [[ $redir1 != 0 || $redir2 != 0 || $redir3 != 0  || $redir4 != 0 ]]
+	then
+		echo "ICMP redirects is not compliant."
+		echo "To remediate this:
+			Set the following parameters in /etc/sysctl or a /etc/sysctl.d/* file:
+				net.ipv4.conf.all.accept_redirects = 0
+				net.ipv4.conf.default.accept_redirects = 0
+				
+			Run the following commands to set the active kernel parameters:
+				sysctl -w net.ipv4.conf.all.accept redirects=0
+				sysctl -w net.ipv4.conf.default.accept redirects=0
+				sysctl -w net.ipv4.route.flush=1"
+	
+	else
+		echo "ICMP redirects are compliant."
+	fi
+}
 #need to add ICMP redirects
 
 #ICMP redirects are not accepted - NOTES
