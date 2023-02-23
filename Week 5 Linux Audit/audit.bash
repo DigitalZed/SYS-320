@@ -145,7 +145,7 @@ ipForward
 
 icmpRedir()
 {
-	redir1=$(sysctl net.ipv4.conf.default.accept_redirects |  '{print $3}')
+	redir1=$(sysctl net.ipv4.conf.default.accept_redirects | awk '{print $3}')
 	redir2=$(grep "net\.ipv4\.conf\.all\.accept_redirects" /etc/sysctl.conf  | awk '{print $3}')
 
 	
