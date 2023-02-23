@@ -145,12 +145,11 @@ ipForward
 
 icmpRedir()
 {
-	redir1=$(sysctl net.ipv4.conf.all.accept redirects | awk -F. '{print $3}')
-	redir2=$(sysctl net.ipv4.conf.default.accept_redirects | awk -F. '{print $3}')
-	redir3=$(grep "net\.ipv4\.conf\.all\.accept_redirects" /etc/sysctl.conf /ect/sysctl.d/* | awk -F. '{print $3}')
-	redir4=$(grep "net\.ipv4\.conf\.default\.accept_redirects" /etc/sysctl.conf /ect/sysctl.d/* | awk -F. '{print $3}')
+	redir1=$(sysctl net.ipv4.conf.default.accept_redirects |  '{print $3}')
+	redir2=$(grep "net\.ipv4\.conf\.all\.accept_redirects" /etc/sysctl.conf  | awk '{print $3}')
+
 	
-	if [[ $redir1 != 0 || $redir2 != 0 || $redir3 != 0  || $redir4 != 0 ]]
+	if [[ $redir1 != 0 || $redir2 != 0 ]]
 	then
 		echo "ICMP redirects is not compliant."
 		echo "To remediate this:
@@ -168,25 +167,4 @@ icmpRedir()
 	fi
 }
 icmpRedir
-#need to add ICMP redirects
 
-#ICMP redirects are not accepted - NOTES
-
-#audit
-sysctl net.ipv4.conf.all.accept redirects
-#output should be "net.ipv4.conf.all.accept redirects = 0"
-sysctl net.ipv4.conf.default.accept_redirects
-#output: "net.ipv4.conf.default.accept_redirects = 0"
-grep "net\.ipv4\.conf\.all\.accept_redirects" /etc/sysctl.conf /ect/sysctl.d/*
-#net.ipv4.conf.all.accept_redirects = 0
-grep "net\.ipv4\.conf\.default\.accept_redirects" /etc/sysctl.conf /ect/sysctl.d/*
-#net.ipv4.conf.default.accept_redirects = 0
-
-#remediation
-#set the following parameters in /etc/sysctl or a /etc/sysctl.d/* file:
-#net.ipv4.conf.all.accept_redirects = 0
-#net.ipv4.conf.default.accept_redirects = 0
-#run the following commands to set the active kernel parameters
-sysctl -w net.ipv4.conf.all.accept redirects=0
-sysctl -w net.ipv4.conf.default.accept redirects=0
-sysctl -w net.ipv4.route.flush=1
