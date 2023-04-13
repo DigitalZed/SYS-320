@@ -1,0 +1,5 @@
+What did you find the most challenging about this assignment and what did you do to overcome it?
+What I found most challenging was getting my csv files to have the correct information in them. At first when I was testing out my commands on powershell they would show up well in there and then not show the same thing in the csv file. I figured out that if I piped my commands and selected the fields I wanted to see they would show up better in the csv. One issue I wasn't completely able to resolve however, was that my commands would show up fine if I didn't issue them in a script but then once they were part of the script the output wouldn't actually show up the screen and the script would move on and execute my next command without completing that.
+
+What did you like the most about this assignment and why? 
+I liked thinking about what would be important for incidence response and deciding what commandlets I would use.
